@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 import { database } from './config/database';
 import { logger } from './utils/logger';
 import scheduleRoutes from './routes/scheduleRoutes';
+import authRoutes from './routes/authRoutes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 
 // Load environment variables
@@ -70,6 +71,7 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/schedules', scheduleRoutes);
 
 // Root endpoint

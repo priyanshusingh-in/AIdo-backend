@@ -33,7 +33,8 @@ export class ScheduleController {
         return;
       }
 
-      const { prompt, userId } = req.body;
+      const { prompt } = req.body;
+      const userId = req.user?.userId || req.body.userId; // Use authenticated user or fallback to body
 
       logger.info('Received schedule creation request', { 
         prompt: prompt.substring(0, 100) + '...', 
@@ -86,10 +87,11 @@ export class ScheduleController {
   // Get all schedules with pagination
   public static async getSchedules(req: Request, res: Response): Promise<void> {
     try {
-      const { userId, limit = 50, offset = 0 } = req.query;
+      const { limit = 50, offset = 0 } = req.query;
+      const userId = req.user?.userId; // Use authenticated user
 
       const result = await scheduleService.getSchedules(
-        userId as string,
+        userId,
         parseInt(limit as string),
         parseInt(offset as string)
       );

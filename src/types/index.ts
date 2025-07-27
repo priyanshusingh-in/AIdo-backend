@@ -49,6 +49,34 @@ export interface AppError extends Error {
   isOperational: boolean;
 }
 
+// Auth Types
+export interface UserData {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AuthResponse {
+  user: UserData;
+  token: string;
+}
+
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}
+
 // Environment Variables
 export interface EnvironmentVariables {
   PORT: number;

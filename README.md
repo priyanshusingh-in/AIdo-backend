@@ -104,18 +104,118 @@ The server will start on `http://localhost:3000`
 http://localhost:3000/api/v1
 ```
 
-### Endpoints
+### Authentication Endpoints
 
-#### 1. Create Schedule (POST `/schedules`)
+#### 1. Register User (POST `/auth/register`)
 
-Create a new schedule from natural language prompt.
+Register a new user account.
 
 **Request Body:**
 
 ```json
 {
-  "prompt": "Schedule a meeting with John next Tuesday at 10 AM",
-  "userId": "optional-user-id"
+  "email": "user@example.com",
+  "password": "SecurePass123",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "user_id_here",
+      "email": "user@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "isActive": true
+    },
+    "token": "jwt_token_here"
+  },
+  "message": "User registered successfully"
+}
+```
+
+#### 2. Login User (POST `/auth/login`)
+
+Authenticate user and get access token.
+
+**Request Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "SecurePass123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": "user_id_here",
+      "email": "user@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "isActive": true
+    },
+    "token": "jwt_token_here"
+  },
+  "message": "Login successful"
+}
+```
+
+#### 3. Get User Profile (GET `/auth/profile`)
+
+Get current user's profile information.
+
+**Headers:**
+
+```
+Authorization: Bearer <jwt_token>
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "_id": "user_id_here",
+    "email": "user@example.com",
+    "firstName": "John",
+    "lastName": "Doe",
+    "isActive": true,
+    "createdAt": "2024-01-15T10:00:00.000Z",
+    "updatedAt": "2024-01-15T10:00:00.000Z"
+  }
+}
+```
+
+### Schedule Endpoints
+
+#### 1. Create Schedule (POST `/schedules`)
+
+Create a new schedule from natural language prompt.
+
+**Headers:**
+
+```
+Authorization: Bearer <jwt_token> (optional - for user-specific schedules)
+```
+
+**Request Body:**
+
+```json
+{
+  "prompt": "Schedule a meeting with John next Tuesday at 10 AM"
 }
 ```
 
@@ -148,9 +248,14 @@ Create a new schedule from natural language prompt.
 
 Retrieve all schedules with pagination.
 
+**Headers:**
+
+```
+Authorization: Bearer <jwt_token> (required)
+```
+
 **Query Parameters:**
 
-- `userId` (optional): Filter by user ID
 - `limit` (optional): Number of records to return (default: 50)
 - `offset` (optional): Number of records to skip (default: 0)
 
@@ -353,6 +458,22 @@ Run tests:
 ```bash
 npm test
 ```
+
+### Testing Authentication
+
+Test the authentication endpoints:
+
+```bash
+node test-auth.js
+```
+
+This will test:
+
+- User registration
+- User login
+- Protected routes
+- Schedule creation with authentication
+- Error handling for invalid credentials
 
 ## 📝 Scripts
 

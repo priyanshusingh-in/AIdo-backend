@@ -1,0 +1,229 @@
+{
+  "info": {
+    "name": "AI Scheduling Backend API",
+    "description": "Collection for testing the AI Scheduling Backend API endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Create Schedule - Meeting",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prompt\": \"Schedule a meeting with John next Tuesday at 10 AM for 1 hour\",\n  \"userId\": \"user123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules"]
+        }
+      }
+    },
+    {
+      "name": "Create Schedule - Reminder",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prompt\": \"Remind me to call Sarah tomorrow at 3 PM\",\n  \"userId\": \"user123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules"]
+        }
+      }
+    },
+    {
+      "name": "Create Schedule - Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"prompt\": \"Add a task to review quarterly reports by Friday at 5 PM\",\n  \"userId\": \"user123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules"]
+        }
+      }
+    },
+    {
+      "name": "Get All Schedules",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules?userId=user123&limit=10&offset=0",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules"],
+          "query": [
+            {
+              "key": "userId",
+              "value": "user123"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            },
+            {
+              "key": "offset",
+              "value": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Schedule by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules/{{scheduleId}}?userId=user123",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules", "{{scheduleId}}"],
+          "query": [
+            {
+              "key": "userId",
+              "value": "user123"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Schedule",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated Meeting Title\",\n  \"description\": \"Updated meeting description\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules/{{scheduleId}}?userId=user123",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules", "{{scheduleId}}"],
+          "query": [
+            {
+              "key": "userId",
+              "value": "user123"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Delete Schedule",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules/{{scheduleId}}?userId=user123",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules", "{{scheduleId}}"],
+          "query": [
+            {
+              "key": "userId",
+              "value": "user123"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Schedules by Date Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules/date-range?startDate=2024-01-01&endDate=2024-12-31&userId=user123",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules", "date-range"],
+          "query": [
+            {
+              "key": "startDate",
+              "value": "2024-01-01"
+            },
+            {
+              "key": "endDate",
+              "value": "2024-12-31"
+            },
+            {
+              "key": "userId",
+              "value": "user123"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Schedules by Type",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/schedules/type/meeting?userId=user123",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "v1", "schedules", "type", "meeting"],
+          "query": [
+            {
+              "key": "userId",
+              "value": "user123"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "scheduleId",
+      "value": "your-schedule-id-here",
+      "type": "string"
+    }
+  ]
+} 

@@ -1,10 +1,12 @@
 import { ScheduleController } from '../controllers/scheduleController';
 import { scheduleService } from '../services/scheduleService';
-import { geminiService } from '../services/geminiService';
+import { getGeminiService } from '../services/geminiService';
 
 // Mock the services
 jest.mock('../services/scheduleService');
-jest.mock('../services/geminiService');
+jest.mock('../services/geminiService', () => ({
+  getGeminiService: jest.fn()
+}));
 
 describe('ScheduleController', () => {
   beforeEach(() => {
@@ -45,12 +47,15 @@ describe('ScheduleController', () => {
         message: 'Schedule created successfully'
       };
 
-      (geminiService.processSchedulePrompt as jest.Mock).mockResolvedValue(mockAIResponse);
+      const mockGeminiService = {
+        processSchedulePrompt: jest.fn().mockResolvedValue(mockAIResponse)
+      };
+      (getGeminiService as jest.Mock).mockReturnValue(mockGeminiService);
       (scheduleService.createSchedule as jest.Mock).mockResolvedValue(mockScheduleResponse);
 
       await ScheduleController.createSchedule(mockRequest, mockResponse);
 
-      expect(geminiService.processSchedulePrompt).toHaveBeenCalledWith('Schedule a meeting with John next Tuesday at 10 AM');
+      expect(mockGeminiService.processSchedulePrompt).toHaveBeenCalledWith('Schedule a meeting with John next Tuesday at 10 AM');
       expect(scheduleService.createSchedule).toHaveBeenCalled();
       expect(mockResponse.status).toHaveBeenCalledWith(201);
       expect(mockResponse.json).toHaveBeenCalledWith({

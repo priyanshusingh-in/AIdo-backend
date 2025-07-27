@@ -21,7 +21,7 @@ export class Database {
     }
 
     try {
-      const mongoUri = process.env.MONGODB_URI;
+      const mongoUri = process.env['MONGODB_URI'];
       
       if (!mongoUri) {
         throw new Error('MONGODB_URI environment variable is not defined');
@@ -32,7 +32,6 @@ export class Database {
         serverSelectionTimeoutMS: 5000,
         socketTimeoutMS: 45000,
         bufferCommands: false,
-        bufferMaxEntries: 0,
       });
 
       this.isConnected = true;

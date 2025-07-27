@@ -7,7 +7,7 @@ export class GeminiService {
   private model: any;
 
   constructor() {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env['GEMINI_API_KEY'];
     
     if (!apiKey) {
       throw new Error('GEMINI_API_KEY environment variable is not defined');
@@ -141,4 +141,12 @@ JSON Response:`;
   }
 }
 
-export const geminiService = new GeminiService(); 
+// Lazy initialization to ensure environment variables are loaded
+let _geminiService: GeminiService | null = null;
+
+export const getGeminiService = (): GeminiService => {
+  if (!_geminiService) {
+    _geminiService = new GeminiService();
+  }
+  return _geminiService;
+}; 

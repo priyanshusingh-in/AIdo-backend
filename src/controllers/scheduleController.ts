@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import { geminiService } from '../services/geminiService';
+import { getGeminiService } from '../services/geminiService';
 import { scheduleService } from '../services/scheduleService';
 import { logger } from '../utils/logger';
 import { ApiResponse } from '../types';
@@ -41,7 +41,7 @@ export class ScheduleController {
       });
 
       // Process the prompt with Gemini AI
-      const aiResponse = await geminiService.processSchedulePrompt(prompt);
+      const aiResponse = await getGeminiService().processSchedulePrompt(prompt);
 
       if (!aiResponse.success || !aiResponse.data) {
         res.status(400).json({

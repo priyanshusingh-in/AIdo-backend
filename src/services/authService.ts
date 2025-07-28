@@ -35,7 +35,7 @@ export class AuthService {
       throw new Error('JWT_SECRET environment variable is not defined');
     }
 
-    return jwt.sign({ userId }, secret, { expiresIn });
+    return jwt.sign({ userId }, secret, { expiresIn: expiresIn as any });
   }
 
   public static async registerUser(authData: AuthData): Promise<ApiResponse<AuthResponse>> {
@@ -62,15 +62,15 @@ export class AuthService {
       const savedUser = await user.save();
 
       // Generate JWT token
-      const token = this.generateToken(savedUser._id.toString());
+      const token = this.generateToken((savedUser._id as any).toString());
 
-      logger.info('User registered successfully', { userId: savedUser._id.toString() });
+      logger.info('User registered successfully', { userId: (savedUser._id as any).toString() });
 
       return {
         success: true,
         data: {
           user: {
-            id: savedUser._id.toString(),
+            id: (savedUser._id as any).toString(),
             email: savedUser.email,
             firstName: savedUser.firstName,
             lastName: savedUser.lastName,

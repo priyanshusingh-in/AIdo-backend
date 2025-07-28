@@ -1,5 +1,5 @@
 import { Schedule, ISchedule } from '../models/Schedule';
-import { ScheduleData, ScheduleRequest, ApiResponse } from '../types';
+import { ScheduleData, ApiResponse } from '../types';
 import { logger } from '../utils/logger';
 
 export class ScheduleService {

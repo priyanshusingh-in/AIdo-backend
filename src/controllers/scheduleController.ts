@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { getGeminiService } from '../services/geminiService';
 import { scheduleService } from '../services/scheduleService';
 import { logger } from '../utils/logger';
-import { ApiResponse } from '../types';
+// import { ApiResponse } from '../types';
 
 export class ScheduleController {
   // Validation rules for creating a schedule

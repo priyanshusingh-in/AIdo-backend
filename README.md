@@ -1,4 +1,4 @@
-# AI Scheduling Backend
+# AIdo: AI Scheduling Backend
 
 A powerful Node.js backend application that uses Google Gemini AI to process natural language scheduling requests and store them in MongoDB. Users can provide prompts in natural language, and the AI will extract scheduling information and return it in JSON format for database storage.
 

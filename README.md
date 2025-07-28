@@ -33,6 +33,17 @@ A powerful Node.js backend application that uses Google Gemini AI to process nat
 
 ## 🚀 Quick Start
 
+### Production API
+
+**Live API URL:** `https://aido-backend.onrender.com`
+
+**Available Endpoints:**
+
+- Health Check: `https://aido-backend.onrender.com/health`
+- API Base: `https://aido-backend.onrender.com/api/v1`
+- Authentication: `https://aido-backend.onrender.com/api/v1/auth`
+- Schedules: `https://aido-backend.onrender.com/api/v1/schedules`
+
 ### 1. Clone the Repository
 
 ```bash
@@ -56,13 +67,40 @@ cp env.example .env
 
 Edit `.env` file with your configuration:
 
+**Development Configuration:**
+
 ```env
 # Server Configuration
 PORT=3000
 NODE_ENV=development
 
-# MongoDB Configuration
+# MongoDB Configuration (Local)
 MONGODB_URI=mongodb://localhost:27017/ai-scheduling-app
+
+# Gemini AI Configuration
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Security
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRES_IN=7d
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Logging
+LOG_LEVEL=info
+```
+
+**Production Configuration (MongoDB Atlas):**
+
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=production
+
+# MongoDB Configuration (Atlas)
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai-scheduling-app?retryWrites=true&w=majority
 
 # Gemini AI Configuration
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -100,8 +138,16 @@ The server will start on `http://localhost:3000`
 
 ### Base URL
 
+**Development:**
+
 ```
 http://localhost:3000/api/v1
+```
+
+**Production:**
+
+```
+https://aido-backend.onrender.com/api/v1
 ```
 
 ### Authentication Endpoints
@@ -422,6 +468,31 @@ The application can handle various natural language prompts:
 
 ## 🚀 Deployment
 
+### Production Deployment (Render)
+
+**Live Application:** `https://aido-backend.onrender.com`
+
+**Deployment Configuration:**
+
+- **Build Command:** `npm install && npm run build`
+- **Start Command:** `npm start`
+- **Environment:** Node.js 18+
+- **Auto-deploy:** On commit to main branch
+
+**Required Environment Variables:**
+
+```env
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai-scheduling-app?retryWrites=true&w=majority
+JWT_SECRET=your-64-character-random-hex-string
+GEMINI_API_KEY=AIzaSyC...your-actual-gemini-api-key
+NODE_ENV=production
+PORT=3000
+JWT_EXPIRES_IN=7d
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+LOG_LEVEL=info
+```
+
 ### Docker Deployment
 
 1. Build the Docker image:
@@ -436,7 +507,7 @@ docker build -t ai-scheduling-backend .
 docker run -p 3000:3000 --env-file .env ai-scheduling-backend
 ```
 
-### Production Deployment
+### Local Production Deployment
 
 1. Set environment variables for production
 2. Build the application:
@@ -499,6 +570,24 @@ This project is licensed under the MIT License.
 ## 🆘 Support
 
 For support and questions, please open an issue in the repository.
+
+## 📋 Recent Updates
+
+### Version 2.1.0 (July 2024)
+
+- ✅ **Production Deployment**: Successfully deployed to Render at `https://aido-backend.onrender.com`
+- ✅ **Build Fixes**: Resolved TypeScript compilation issues for production builds
+- ✅ **Database**: Enhanced MongoDB connection with better error handling
+- ✅ **Environment**: Improved environment variable validation and error reporting
+- ✅ **Logging**: Added detailed startup logging and error reporting
+- ✅ **Security**: Fixed JWT signing type compatibility issues
+- ✅ **Performance**: Removed duplicate database index warnings
+- ✅ **Documentation**: Updated with production deployment information
+
+### Previous Versions
+
+- **Version 2.0.0**: Added comprehensive user authentication system with JWT
+- **Version 1.0.0**: Initial release with AI scheduling functionality
 
 ## 🔗 Related Projects
 

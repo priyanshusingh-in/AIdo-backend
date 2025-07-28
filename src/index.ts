@@ -24,7 +24,7 @@ app.use(helmet());
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.com'] 
+    ? ['https://aido-backend.onrender.com', 'https://your-frontend-domain.com'] 
     : ['http://localhost:3000', 'http://localhost:3001'],
   credentials: true
 }));
@@ -79,7 +79,7 @@ app.get('/', (_req, res) => {
   res.status(200).json({
     success: true,
     message: 'AI Scheduling Backend API',
-    version: '1.0.0',
+    version: '2.1.0',
     endpoints: {
       health: '/health',
       schedules: '/api/v1/schedules',

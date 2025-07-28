@@ -1,6 +1,6 @@
 {
   "name": "ai-scheduling-backend",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "AI-powered scheduling backend application using Node.js, Express, TypeScript, and Gemini AI",
   "main": "dist/index.js",
   "scripts": {

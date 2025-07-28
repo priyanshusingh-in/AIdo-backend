@@ -99,42 +99,52 @@ const validateEnvironment = (): void => {
   const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'GEMINI_API_KEY'];
   const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
   
+  console.log('Checking environment variables:');
+  requiredEnvVars.forEach(varName => {
+    const isSet = !!process.env[varName];
+    console.log(`  ${varName}: ${isSet ? '✅ SET' : '❌ MISSING'}`);
+  });
+  
   if (missingVars.length > 0) {
-    logger.error('Missing required environment variables:', missingVars);
-    logger.error('Please set the following environment variables:');
+    console.error('❌ Missing required environment variables:', missingVars);
+    console.error('Please set the following environment variables in Render:');
     missingVars.forEach(varName => {
-      logger.error(`  - ${varName}`);
+      console.error(`  - ${varName}`);
     });
     process.exit(1);
   }
   
-  logger.info('Environment variables validated successfully');
+  console.log('✅ All environment variables are set');
 };
 
 // Start server
 const startServer = async (): Promise<void> => {
   try {
-    logger.info('Starting AI Scheduling Backend...');
-    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
-    logger.info(`Port: ${PORT}`);
+    console.log('=== Starting AI Scheduling Backend ===');
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Port: ${PORT}`);
     
     // Validate environment variables
+    console.log('Validating environment variables...');
     validateEnvironment();
+    console.log('✅ Environment variables validated');
     
     // Connect to database
-    logger.info('Connecting to database...');
+    console.log('Connecting to database...');
     await database.connect();
+    console.log('✅ Database connected successfully');
 
     // Start the server
     app.listen(PORT, () => {
-      logger.info(`🚀 AI Scheduling Backend server is running on port ${PORT}`);
-      logger.info(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-      logger.info(`🔗 Health check: http://localhost:${PORT}/health`);
-      logger.info(`📝 API Base URL: http://localhost:${PORT}/api/v1`);
+      console.log(`🚀 AI Scheduling Backend server is running on port ${PORT}`);
+      console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+      console.log(`📝 API Base URL: http://localhost:${PORT}/api/v1`);
     });
 
   } catch (error) {
-    logger.error('Failed to start server:', error);
+    console.error('❌ Failed to start server:', error);
+    console.error('Error details:', error instanceof Error ? error.message : error);
     process.exit(1);
   }
 };

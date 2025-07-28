@@ -35,14 +35,14 @@ A powerful Node.js backend application that uses Google Gemini AI to process nat
 
 ### Production API
 
-**Live API URL:** `https://aido-backend.onrender.com`
+**Live API URL:** `[Your Production URL]`
 
 **Available Endpoints:**
 
-- Health Check: `https://aido-backend.onrender.com/health`
-- API Base: `https://aido-backend.onrender.com/api/v1`
-- Authentication: `https://aido-backend.onrender.com/api/v1/auth`
-- Schedules: `https://aido-backend.onrender.com/api/v1/schedules`
+- Health Check: `[Your Production URL]/health`
+- API Base: `[Your Production URL]/api/v1`
+- Authentication: `[Your Production URL]/api/v1/auth`
+- Schedules: `[Your Production URL]/api/v1/schedules`
 
 ### 1. Clone the Repository
 
@@ -147,7 +147,7 @@ http://localhost:3000/api/v1
 **Production:**
 
 ```
-https://aido-backend.onrender.com/api/v1
+[Your Production URL]/api/v1
 ```
 
 ### Authentication Endpoints
@@ -470,7 +470,7 @@ The application can handle various natural language prompts:
 
 ### Production Deployment (Render)
 
-**Live Application:** `https://aido-backend.onrender.com`
+**Live Application:** `[Your Production URL]`
 
 **Deployment Configuration:**
 
@@ -575,7 +575,7 @@ For support and questions, please open an issue in the repository.
 
 ### Version 2.1.0 (July 2024)
 
-- ✅ **Production Deployment**: Successfully deployed to Render at `https://aido-backend.onrender.com`
+- ✅ **Production Deployment**: Successfully deployed to production environment
 - ✅ **Build Fixes**: Resolved TypeScript compilation issues for production builds
 - ✅ **Database**: Enhanced MongoDB connection with better error handling
 - ✅ **Environment**: Improved environment variable validation and error reporting

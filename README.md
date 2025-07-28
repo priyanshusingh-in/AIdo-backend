@@ -75,7 +75,7 @@ PORT=3000
 NODE_ENV=development
 
 # MongoDB Configuration (Local)
-MONGODB_URI=mongodb://localhost:27017/ai-scheduling-app
+MONGODB_URI=mongodb://localhost:27017/your-database-name
 
 # Gemini AI Configuration
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -100,7 +100,7 @@ PORT=3000
 NODE_ENV=production
 
 # MongoDB Configuration (Atlas)
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai-scheduling-app?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://username:password@your-cluster.mongodb.net/your-database-name?retryWrites=true&w=majority
 
 # Gemini AI Configuration
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -482,7 +482,7 @@ The application can handle various natural language prompts:
 **Required Environment Variables:**
 
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai-scheduling-app?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://username:password@your-cluster.mongodb.net/your-database-name?retryWrites=true&w=majority
 JWT_SECRET=your-64-character-random-hex-string
 GEMINI_API_KEY=AIzaSyC...your-actual-gemini-api-key
 NODE_ENV=production

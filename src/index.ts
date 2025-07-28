@@ -94,10 +94,35 @@ app.use(notFoundHandler);
 // Error handling middleware (must be last)
 app.use(errorHandler);
 
+// Validate required environment variables
+const validateEnvironment = (): void => {
+  const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'GEMINI_API_KEY'];
+  const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+  
+  if (missingVars.length > 0) {
+    logger.error('Missing required environment variables:', missingVars);
+    logger.error('Please set the following environment variables:');
+    missingVars.forEach(varName => {
+      logger.error(`  - ${varName}`);
+    });
+    process.exit(1);
+  }
+  
+  logger.info('Environment variables validated successfully');
+};
+
 // Start server
 const startServer = async (): Promise<void> => {
   try {
+    logger.info('Starting AI Scheduling Backend...');
+    logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    logger.info(`Port: ${PORT}`);
+    
+    // Validate environment variables
+    validateEnvironment();
+    
     // Connect to database
+    logger.info('Connecting to database...');
     await database.connect();
 
     // Start the server

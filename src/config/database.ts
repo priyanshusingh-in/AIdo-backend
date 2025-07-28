@@ -24,14 +24,20 @@ export class Database {
       const mongoUri = process.env['MONGODB_URI'];
       
       if (!mongoUri) {
+        logger.error('MONGODB_URI environment variable is not defined');
+        logger.error('Please set MONGODB_URI in your environment variables');
         throw new Error('MONGODB_URI environment variable is not defined');
       }
 
+      logger.info('Attempting to connect to MongoDB...');
+      
       await mongoose.connect(mongoUri, {
         maxPoolSize: 10,
-        serverSelectionTimeoutMS: 5000,
+        serverSelectionTimeoutMS: 10000,
         socketTimeoutMS: 45000,
         bufferCommands: false,
+        retryWrites: true,
+        w: 'majority'
       });
 
       this.isConnected = true;

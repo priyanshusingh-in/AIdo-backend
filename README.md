@@ -5,6 +5,7 @@ A powerful Node.js backend application that uses Google Gemini AI to process nat
 ## 🚀 Features
 
 - **Natural Language Processing**: Convert natural language prompts to structured scheduling data using Google Gemini AI
+- **Relative Time Support**: Automatically calculate actual dates and times from relative expressions like "in 2 minutes", "in 1 hour", "in 3 days"
 - **Comprehensive Scheduling**: Support for meetings, reminders, tasks, and appointments
 - **RESTful API**: Full CRUD operations for schedules
 - **Type Safety**: Built with TypeScript for better development experience
@@ -30,6 +31,44 @@ A powerful Node.js backend application that uses Google Gemini AI to process nat
 - Node.js 18 or higher
 - MongoDB instance (local or cloud)
 - Google Gemini API key
+
+## 🕐 Relative Time Support
+
+The AI scheduling system now supports relative time expressions, automatically calculating actual dates and times from natural language prompts. This solves the issue where AI agents weren't aware of current date/time.
+
+### Supported Relative Time Expressions
+
+- **Minutes**: "in 2 minutes", "in 30 minutes"
+- **Hours**: "in 1 hour", "in 3 hours"
+- **Days**: "in 3 days", "in 1 week"
+- **Weeks**: "in 2 weeks", "in 1 month"
+- **Months**: "in 3 months", "in 6 months"
+- **Years**: "in 1 year", "in 2 years"
+
+### Examples
+
+```bash
+# These prompts will automatically calculate the correct date and time
+"remind me to call mom in 2 minutes"
+"schedule a meeting in 1 hour"
+"create a task in 3 days"
+"remind me to buy groceries in 1 week"
+"meeting with John in 30 minutes"
+```
+
+### How It Works
+
+1. **Detection**: The system detects relative time expressions in user prompts
+2. **Calculation**: Uses the current date/time as reference to calculate actual dates
+3. **Post-processing**: Overrides AI-generated dates with calculated values
+4. **Fallback**: If no relative time is detected, uses AI-generated dates as before
+
+### Technical Implementation
+
+- **Time Utils**: New utility functions in `src/utils/timeUtils.ts`
+- **AI Enhancement**: Updated Gemini service to include current date/time in prompts
+- **Post-processing**: Added logic to detect and calculate relative times
+- **Backward Compatibility**: Existing functionality remains unchanged
 
 ## 🚀 Quick Start
 

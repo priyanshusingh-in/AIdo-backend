@@ -1,6 +1,12 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { AIResponse, ScheduleData } from '../types';
 import { logger } from '../utils/logger';
+import { 
+  calculateRelativeTime, 
+  hasRelativeTimeExpression, 
+  extractRelativeTimeExpression,
+  getCurrentDateTime 
+} from '../utils/timeUtils';
 
 export class GeminiService {
   private genAI: GoogleGenerativeAI;
@@ -18,7 +24,13 @@ export class GeminiService {
   }
 
   private createPrompt(userPrompt: string): string {
-    return `You are an AI scheduling assistant. Analyze the following user prompt and extract scheduling information. Return ONLY a valid JSON object with the following structure:
+    const currentDateTime = getCurrentDateTime();
+    
+    return `You are an AI scheduling assistant. Analyze the following user prompt and extract scheduling information. 
+
+CURRENT DATE AND TIME: ${currentDateTime.date} ${currentDateTime.time}
+
+Return ONLY a valid JSON object with the following structure:
 
 {
   "type": "meeting|reminder|task|appointment",
@@ -35,18 +47,20 @@ export class GeminiService {
 }
 
 Rules:
-1. If no specific date is mentioned, use today's date
-2. If no specific time is mentioned, use a reasonable default time (e.g., 09:00)
-3. Duration should be in minutes
-4. Priority should be "medium" unless explicitly stated otherwise
-5. Type should be inferred from context:
+1. Use the CURRENT DATE AND TIME provided above as the reference point
+2. If the user mentions relative time (e.g., "in 2 minutes", "in 1 hour"), calculate the actual date and time based on the current date/time
+3. If no specific date is mentioned, use today's date (${currentDateTime.date})
+4. If no specific time is mentioned, use a reasonable default time (e.g., 09:00)
+5. Duration should be in minutes
+6. Priority should be "medium" unless explicitly stated otherwise
+7. Type should be inferred from context:
    - "meeting" for meetings with others
    - "reminder" for personal reminders
    - "task" for to-do items
    - "appointment" for scheduled appointments
-6. Extract participant names when mentioned
-7. Include location if specified
-8. Return ONLY the JSON object, no additional text
+8. Extract participant names when mentioned
+9. Include location if specified
+10. Return ONLY the JSON object, no additional text
 
 User prompt: "${userPrompt}"
 
@@ -74,19 +88,22 @@ JSON Response:`;
       const jsonString = jsonMatch[0];
       const scheduleData: ScheduleData = JSON.parse(jsonString);
 
+      // Post-process the data to handle relative time expressions
+      const processedData = this.postProcessScheduleData(scheduleData, userPrompt);
+
       // Validate the parsed data
-      if (!this.validateScheduleData(scheduleData)) {
+      if (!this.validateScheduleData(processedData)) {
         throw new Error('Invalid schedule data structure');
       }
 
       logger.info('Successfully processed schedule prompt', { 
-        type: scheduleData.type, 
-        title: scheduleData.title 
+        type: processedData.type, 
+        title: processedData.title 
       });
 
       return {
         success: true,
-        data: scheduleData
+        data: processedData
       };
 
     } catch (error) {
@@ -98,6 +115,35 @@ JSON Response:`;
         error: error instanceof Error ? error.message : 'Unknown error occurred'
       };
     }
+  }
+
+  private postProcessScheduleData(scheduleData: ScheduleData, userPrompt: string): ScheduleData {
+    // Check if the user prompt contains relative time expressions
+    if (hasRelativeTimeExpression(userPrompt)) {
+      const relativeExpression = extractRelativeTimeExpression(userPrompt);
+      
+      if (relativeExpression) {
+        logger.info('Detected relative time expression', { 
+          expression: relativeExpression, 
+          originalDate: scheduleData.date, 
+          originalTime: scheduleData.time 
+        });
+        
+        // Calculate the actual date and time based on the relative expression
+        const calculatedTime = calculateRelativeTime(relativeExpression);
+        
+        // Update the schedule data with calculated date and time
+        scheduleData.date = calculatedTime.date;
+        scheduleData.time = calculatedTime.time;
+        
+        logger.info('Updated schedule with calculated time', { 
+          newDate: scheduleData.date, 
+          newTime: scheduleData.time 
+        });
+      }
+    }
+    
+    return scheduleData;
   }
 
   private validateScheduleData(data: any): data is ScheduleData {
